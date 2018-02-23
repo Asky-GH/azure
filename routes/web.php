@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/download', 'HomeController@download');
 
 Route::post('/home/upload', 'HomeController@upload');
+
+Route::get('/home/delete', 'HomeController@delete');

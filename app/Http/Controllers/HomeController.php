@@ -115,4 +115,25 @@ class HomeController extends Controller
             echo $code.": ".$error_message."<br />";
         }
     }
+
+    public function delete(Request $request)
+    {
+        // Create blob REST proxy.
+        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
+
+        try    {
+            $containerName = strval(Auth::id()) . strtolower(Auth::user()->name) . "container";
+            // Delete blob.
+            $blobClient->deleteBlob($containerName, $request->name);            
+            return redirect('/home');
+        }
+        catch(ServiceException $e){
+            // Handle exception based on error codes and messages.
+            // Error codes and messages are here:
+            // http://msdn.microsoft.com/library/azure/dd179439.aspx
+            $code = $e->getCode();
+            $error_message = $e->getMessage();
+            echo $code.": ".$error_message."<br />";
+        }
+    }
 }

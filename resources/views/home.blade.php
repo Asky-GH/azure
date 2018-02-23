@@ -21,7 +21,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Файл</th>
-                                <th scope="col">Управление</th>
+                                <th scope="col" colspan="2" style="text-align: center">Элементы управления</th>
                             </tr>
                         </thead>
                         
@@ -30,7 +30,8 @@
                             <tr>
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <th>{{ $blobs[$i]->getName() }}</th>
-                                <th><a href="/home/download?name={{ $blobs[$i]->getName() }}">Скачать</a></th>
+                                <th style="text-align: right"><a href="/home/download?name={{ $blobs[$i]->getName() }}">Скачать</a></th>
+                                <th><a href="/home/delete?name={{ $blobs[$i]->getName() }}">Удалить</a></th>
                             </tr>
                         @endfor
                         </tbody>
