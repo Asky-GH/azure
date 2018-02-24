@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
-
-// require_once 'vendor/autoload.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
@@ -29,103 +26,63 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Create blob REST proxy.
-        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
-
-        try    {
-            $listContainersResult = $blobClient->listContainers();
-            $containers = $listContainersResult->getContainers();
-            $containerExists = false;
-            $containerName = strval(Auth::id()) . strtolower(Auth::user()->name) . "container";
-            foreach ($containers as $container) {
-                if ($container->getName() == $containerName) {
-                    $containerExists = true;
-                }
-            }
-            if (!$containerExists) {
-                $blobClient->createContainer($containerName);
-            }
-
-            // List blobs.
-            $blob_list = $blobClient->listBlobs($containerName);
-            $blobs = $blob_list->getBlobs();
-
-            return view('home', ['blobs' => $blobs]);
-
-            // foreach($blobs as $blob)
-            // {
-            //     echo $blob->getName().": ".$blob->getUrl()."<br />";
-            // }
-        }
-        catch(ServiceException $e){
-            // Handle exception based on error codes and messages.
-            // Error codes and messages are here:
-            // http://msdn.microsoft.com/library/azure/dd179439.aspx
-            $code = $e->getCode();
-            $error_message = $e->getMessage();
-            echo $code.": ".$error_message."<br />";
-        }
+        $blobs = $this->azure('list');
+        return view('home', ['blobs' => $blobs]);
     }
 
-    public function download(Request $request)
+    public function download()
     {
-        // Create blob REST proxy.
-        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
-
-        try    {
-            // Get blob.
-            $blob = $blobClient->getBlob($containerName, $request->name);
-            //fpassthru($blob->getContentStream());
-
-            $containerName = strval(Auth::id()) . strtolower(Auth::user()->name) . "container";
-            $file = fopen("c:\\Users\\" . get_current_user() . "\\Downloads\\" . $request->name, "x");
-            fwrite($file, stream_get_contents($blob->getContentStream()));
-            return redirect('/home');
-        }
-        catch(ServiceException $e){
-            // Handle exception based on error codes and messages.
-            // Error codes and messages are here:
-            // http://msdn.microsoft.com/library/azure/dd179439.aspx
-            $code = $e->getCode();
-            $error_message = $e->getMessage();
-            echo $code.": ".$error_message."<br />";
-        }
+        $this->azure('download');
+        return redirect('/home');
     }
 
     public function upload()
     {
-        // Create blob REST proxy.
-        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
-
-        $content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
-        $blob_name = basename($_FILES["fileToUpload"]["name"]);
-
-        try    {
-            $containerName = strval(Auth::id()) . strtolower(Auth::user()->name) . "container";
-            //Upload blob
-            $blobClient->createBlockBlob($containerName, $blob_name, $content);
-            return redirect('/home');
-        }
-        catch(ServiceException $e){
-            // Handle exception based on error codes and messages.
-            // Error codes and messages are here:
-            // http://msdn.microsoft.com/library/azure/dd179439.aspx
-            $code = $e->getCode();
-            $error_message = $e->getMessage();
-            echo $code.": ".$error_message."<br />";
-        }
+        $this->azure('upload');
+        return redirect('/home');
     }
 
-    public function delete(Request $request)
+    public function delete()
     {
-        // Create blob REST proxy.
-        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
+        $this->azure('delete');
+        return redirect('/home');
+    }
 
+    public function azure($action)
+    {
+        $blobClient = BlobRestProxy::createBlobService(env('AZURE'));
+        $containerName = strval(auth()->user()->id) . strtolower(auth()->user()->name) . "container";
         try    {
-            $containerName = strval(Auth::id()) . strtolower(Auth::user()->name) . "container";
-            // Delete blob.
-            $blobClient->deleteBlob($containerName, $request->name);            
-            return redirect('/home');
+            switch ($action) {
+                case 'list':
+                    $containers = $blobClient->listContainers()->getContainers();
+                    $containerExists = false;
+                    foreach ($containers as $container) {
+                        if ($container->getName() == $containerName) {
+                            $containerExists = true;
+                        }
+                    }
+                    if (!$containerExists) {
+                        $blobClient->createContainer($containerName);
+                    }        
+                    return $blobClient->listBlobs($containerName)->getBlobs();
+
+                case 'download':
+                    $blob = $blobClient->getBlob($containerName, request()->name);
+                    $file = fopen("c:\\Users\\" . get_current_user() . "\\Downloads\\" . request()->name, "x");
+                    fwrite($file, stream_get_contents($blob->getContentStream()));
+                    break;
+
+                case 'upload':
+                    $content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
+                    $blob_name = basename($_FILES["fileToUpload"]["name"]);
+                    $blobClient->createBlockBlob($containerName, $blob_name, $content);
+                    break;
+                
+                case 'delete':
+                    $blobClient->deleteBlob($containerName, request()->name);
+                    break;
+            }
         }
         catch(ServiceException $e){
             // Handle exception based on error codes and messages.
