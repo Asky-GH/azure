@@ -38,7 +38,11 @@ class HomeController extends Controller
 
     public function upload()
     {
-        $this->azure('upload');
+        $uploadError = $this->azure('upload');        
+        if ($uploadError == "Выберите файл для загрузки!") {
+            $blobs = $this->azure('list');
+            return view('home', ['uploadError' => $uploadError, 'blobs' => $blobs]);
+        }
         return redirect('/home');
     }
 
@@ -69,11 +73,15 @@ class HomeController extends Controller
 
                 case 'download':
                     $blob = $blobClient->getBlob($containerName, request()->name);
-                    $file = fopen("c:\\Users\\" . get_current_user() . "\\Downloads\\" . request()->name, "x");
+                    $file = fopen("c:\\Users\\" . get_current_user() . "\\Downloads\\" . request()->name, "w");
                     fwrite($file, stream_get_contents($blob->getContentStream()));
                     break;
 
                 case 'upload':
+                    if ($_FILES['fileToUpload']['size'] == 0 && $_FILES['fileToUpload']['error'] == 4)
+                    {
+                        return "Выберите файл для загрузки!";
+                    }
                     $content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
                     $blob_name = basename($_FILES["fileToUpload"]["name"]);
                     $blobClient->createBlockBlob($containerName, $blob_name, $content);

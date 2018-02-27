@@ -35,6 +35,13 @@
                         <input type="file" name="fileToUpload" id="fileToUpload">
                         <input type="submit" value="Загрузить" name="submit">
                     </form>
+
+                    @isset($uploadError)
+                        <br>
+                        <div class="alert alert-danger" role="alert">
+                            {{ $uploadError }}
+                        </div>
+                    @endisset
                 </div>
             </div>
         </div>
