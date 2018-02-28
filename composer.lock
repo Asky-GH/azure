@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "619b0250188dd958bba8f1d8cac23850",
+    "content-hash": "8da1dc15913abc9ae077679c0954c606",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -268,16 +268,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.6.4",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "fbe3fe878f4fe69048bb8a52783a09802004f548"
+                "reference": "6678d59be48c4be64eaca6ce70bea48a09488cc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/fbe3fe878f4fe69048bb8a52783a09802004f548",
-                "reference": "fbe3fe878f4fe69048bb8a52783a09802004f548",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6678d59be48c4be64eaca6ce70bea48a09488cc2",
+                "reference": "6678d59be48c4be64eaca6ce70bea48a09488cc2",
                 "shasum": ""
             },
             "require": {
@@ -309,7 +309,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2017-11-14T20:44:03+00:00"
+            "time": "2018-02-28T11:41:37+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -635,22 +635,22 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.6.5",
+            "version": "v5.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2e68209991e15aca1382ef9a3443d13f2e0d8755"
+                "reference": "18402cd4b83fd1d944f3baa0d8cc26d7dfcce333"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2e68209991e15aca1382ef9a3443d13f2e0d8755",
-                "reference": "2e68209991e15aca1382ef9a3443d13f2e0d8755",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/18402cd4b83fd1d944f3baa0d8cc26d7dfcce333",
+                "reference": "18402cd4b83fd1d944f3baa0d8cc26d7dfcce333",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "~1.1",
                 "dragonmantank/cron-expression": "~2.0",
-                "erusev/parsedown": "~1.6",
+                "erusev/parsedown": "~1.7",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
                 "league/flysystem": "~1.0",
@@ -727,6 +727,7 @@
                 "league/flysystem-aws-s3-v3": "Required to use the Flysystem S3 driver (~1.0).",
                 "league/flysystem-cached-adapter": "Required to use Flysystem caching (~1.0).",
                 "league/flysystem-rackspace": "Required to use the Flysystem Rackspace driver (~1.0).",
+                "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (~1.0).",
                 "nexmo/client": "Required to use the Nexmo transport (~1.0).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (~3.0).",
                 "predis/predis": "Required to use the redis cache and queue drivers (~1.0).",
@@ -766,7 +767,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-02-22T19:21:38+00:00"
+            "time": "2018-02-28T14:50:53+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1002,6 +1003,50 @@
                 "storage"
             ],
             "time": "2018-01-11T01:57:49+00:00"
+        },
+        {
+            "name": "microsoft/azure-storage-table",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Azure/azure-storage-table-php.git",
+                "reference": "3f6a50c68976e091442d5abf81860841545dbdd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Azure/azure-storage-table-php/zipball/3f6a50c68976e091442d5abf81860841545dbdd1",
+                "reference": "3f6a50c68976e091442d5abf81860841545dbdd1",
+                "shasum": ""
+            },
+            "require": {
+                "microsoft/azure-storage-common": "~1.0",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MicrosoftAzure\\Storage\\Table\\": "src/Table"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Azure Storage PHP Client Library",
+                    "email": "dmsh@microsoft.com"
+                }
+            ],
+            "description": "This project provides a set of PHP client libraries that make it easy to access Microsoft Azure Storage Table APIs.",
+            "keywords": [
+                "azure",
+                "php",
+                "sdk",
+                "storage",
+                "table"
+            ],
+            "time": "2018-01-11T04:57:30+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3491,16 +3536,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.0.1",
+            "version": "7.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "316555dbd0ed4097bbdd17c65ab416bf27a472e9"
+                "reference": "e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/316555dbd0ed4097bbdd17c65ab416bf27a472e9",
-                "reference": "316555dbd0ed4097bbdd17c65ab416bf27a472e9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9",
+                "reference": "e2f8aa21bc54b6ba218bdd4f9e0dac1e9bc3b4e9",
                 "shasum": ""
             },
             "require": {
@@ -3567,7 +3612,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-02-13T06:08:08+00:00"
+            "time": "2018-02-26T07:03:12+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

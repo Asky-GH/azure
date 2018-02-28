@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use MicrosoftAzure\Storage\Table\TableRestProxy;
+use MicrosoftAzure\Storage\Table\Models\Entity;
+use MicrosoftAzure\Storage\Table\Models\EdmType;
+
 class RegisterController extends Controller
 {
     /*
@@ -62,6 +66,38 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $entity = new Entity();
+        $entity->setPartitionKey("azure");
+        $entity->setRowKey($data['email']);
+        $entity->addProperty("Name", EdmType::STRING, $data['name']);
+        $entity->addProperty("Email", EdmType::STRING, $data['email']);
+        $entity->addProperty("Password", EdmType::STRING, bcrypt($data['password']));
+
+        $tableClient = TableRestProxy::createTableService(env('AZURE'));
+        $tableName = "users";
+
+        try    {
+            $tables = $tableClient->queryTables()->getTables();
+            $tableExists = false;
+            foreach ($tables as $table) {
+                if ($table->getName() == $tableName) {
+                    $tableExists = true;
+                }
+            }
+            if (!$tableExists) {
+                // Create table.
+                $tableClient->createTable($tableName);
+            }            
+            $tableClient->insertEntity($tableName, $entity);
+        }
+        catch(ServiceException $e){
+            $code = $e->getCode();
+            $error_message = $e->getMessage();
+            // Handle exception based on error codes and messages.
+            // Error codes and messages can be found here:
+            // http://msdn.microsoft.com/library/azure/dd179438.aspx
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
