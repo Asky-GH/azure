@@ -25,4 +25,8 @@ Route::post('/home/upload', 'HomeController@upload');
 
 Route::get('/home/delete', 'HomeController@delete');
 
-Route::get('/users', 'AdminController@get');
+Route::get('/users', 'AdminController@index')->middleware('admin');
+
+Route::get('/users/delete', 'AdminController@delete')->middleware('admin');
+
+Route::get('/forbidden', 'AdminController@filter');

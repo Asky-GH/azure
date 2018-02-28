@@ -42,13 +42,13 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
-                                @if (Auth::user()->email == 'test@mail.ru')
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ url('/users') }}">Users</a>
-                                    </div>
-                                @endif
-
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/home') }}">Главная</a>
+                                    
+                                    @if (Auth::user()->email == 'admin@mail.com')
+                                        <a class="dropdown-item" href="{{ url('/users') }}">Пользователи</a>
+                                    @endif
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

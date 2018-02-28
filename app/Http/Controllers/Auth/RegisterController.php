@@ -75,27 +75,12 @@ class RegisterController extends Controller
 
         $tableClient = TableRestProxy::createTableService(env('AZURE'));
         $tableName = "users";
-
-        try    {
-            $tables = $tableClient->queryTables()->getTables();
-            $tableExists = false;
-            foreach ($tables as $table) {
-                if ($table->getName() == $tableName) {
-                    $tableExists = true;
-                }
-            }
-            if (!$tableExists) {
-                // Create table.
-                $tableClient->createTable($tableName);
-            }            
+        try    {         
             $tableClient->insertEntity($tableName, $entity);
         }
         catch(ServiceException $e){
             $code = $e->getCode();
             $error_message = $e->getMessage();
-            // Handle exception based on error codes and messages.
-            // Error codes and messages can be found here:
-            // http://msdn.microsoft.com/library/azure/dd179438.aspx
         }
 
         return User::create([

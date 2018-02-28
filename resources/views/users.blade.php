@@ -12,8 +12,9 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Пользователь</th>
-                                <th scope="col">Данные пользователя</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Почта</th>
+                                <th scope="col">Элементы управления</th>
                             </tr>
                         </thead>
                         
@@ -23,6 +24,7 @@
                                 <th scope="row">{{ $i + 1 }}</th>
                                 <th>{{ $users[$i]->getPropertyValue("Name") }}</th>
                                 <th>{{ $users[$i]->getPropertyValue("Email") }}</th>
+                                <th><a href="/users/delete?email={{ $users[$i]->getPropertyValue('Email') }}">Удалить</a></th>
                             </tr>
                         @endfor
                         </tbody>
